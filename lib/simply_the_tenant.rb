@@ -11,56 +11,57 @@ module SimplyTheTenant
   @@global_access = false
 
   class << self
-    def tenant_class
-      @@tenant_class
-    end
+  end
+  def self.tenant_class
+    @@tenant_class
+  end
 
-    def tenant_class=(klass)
-      @@tenant_class = klass
-    end
+  def self.tenant_class=(klass)
+    @@tenant_class = klass
+  end
 
-    def tenant_name
-      @@tenant_class.name.underscore.to_sym
-    end
+  def self.tenant_name
+    @@tenant_class.name.underscore.to_sym
+  end
 
-    def tenant_id
-      "#{tenant_name}_id"
-    end
+  def self.tenant_id
+    "#{tenant_name}_id"
+  end
 
-    def tenant
-      raise CurrentNeedsTenantError unless Current.respond_to?(tenant_name)
+  def self.tenant
+    raise CurrentNeedsTenantError unless Current.respond_to?(tenant_name)
 
-      Current.public_send(tenant_name)
-    end
+    Current.public_send(tenant_name)
+  end
 
-    def tenant=(tenant)
-      raise CurrentNeedsTenantError unless Current.respond_to?("#{tenant_name}=")
+  def self.tenant=(tenant)
+    raise CurrentNeedsTenantError unless Current.respond_to?("#{tenant_name}=")
 
-      Current.public_send("#{tenant_name}=", tenant)
-    end
+    Current.public_send("#{tenant_name}=", tenant)
+  end
 
-    def with_global_access
-      @@global_access = true
+  def self.with_global_access
+    @@global_access = true
 
-      yield
-    ensure
-      @@global_access = false
-    end
+    yield
+  ensure
+    @@global_access = false
+  end
 
-    def global_access?
-      @@global_access
-    end
+  def self.global_access?
+    @@global_access
+  end
 
-    def with_tenant(tenant)
-      raise NilTenantError if tenant.nil?
 
-      previous_tenant = tenant
-      tenant = tenant
+  def self.with_tenant(tenant)
+    raise NilTenantError if tenant.nil?
 
-      yield
-    ensure
-      tenant = previous_tenant
-    end
+    previous_tenant = self.tenant
+    self.tenant = tenant
+
+    yield
+  ensure
+    self.tenant = previous_tenant
   end
 
   class NilTenantError < StandardError
