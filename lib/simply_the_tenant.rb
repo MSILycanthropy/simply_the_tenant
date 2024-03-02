@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "simply_the_tenant/version"
 require "simply_the_tenant/engine"
 
@@ -8,55 +10,57 @@ module SimplyTheTenant
   @@tenant_class = nil
   @@global_access = false
 
-  def self.tenant_class
-    @@tenant_class
-  end
+  class << self
+    def tenant_class
+      @@tenant_class
+    end
 
-  def self.tenant_class=(klass)
-    @@tenant_class = klass
-  end
+    def tenant_class=(klass)
+      @@tenant_class = klass
+    end
 
-  def self.tenant_name
-    @@tenant_class.name.underscore.to_sym
-  end
+    def tenant_name
+      @@tenant_class.name.underscore.to_sym
+    end
 
-  def self.tenant_id
-    "#{tenant_name}_id"
-  end
+    def tenant_id
+      "#{tenant_name}_id"
+    end
 
-  def self.tenant
-    raise CurrentNeedsTenantError unless Current.respond_to?(tenant_name)
+    def tenant
+      raise CurrentNeedsTenantError unless Current.respond_to?(tenant_name)
 
-    Current.public_send(tenant_name)
-  end
+      Current.public_send(tenant_name)
+    end
 
-  def self.tenant=(tenant)
-    raise CurrentNeedsTenantError unless Current.respond_to?("#{tenant_name}=")
+    def tenant=(tenant)
+      raise CurrentNeedsTenantError unless Current.respond_to?("#{tenant_name}=")
 
-    Current.public_send("#{tenant_name}=", tenant)
-  end
+      Current.public_send("#{tenant_name}=", tenant)
+    end
 
-  def self.with_global_access
-    @@global_access = true
+    def with_global_access
+      @@global_access = true
 
-    yield
-  ensure
-    @@global_access = false
-  end
+      yield
+    ensure
+      @@global_access = false
+    end
 
-  def self.global_access?
-    @@global_access
-  end
+    def global_access?
+      @@global_access
+    end
 
-  def self.with_tenant(tenant)
-    raise NilTenantError if tenant.nil?
+    def with_tenant(tenant)
+      raise NilTenantError if tenant.nil?
 
-    previous_tenant = self.tenant
-    self.tenant = tenant
+      previous_tenant = tenant
+      tenant = tenant
 
-    yield
-  ensure
-    self.tenant = previous_tenant
+      yield
+    ensure
+      tenant = previous_tenant
+    end
   end
 
   class NilTenantError < StandardError
@@ -73,7 +77,8 @@ module SimplyTheTenant
 
   class NoTenantSetError < StandardError
     def initialize
-      super("No tenant class has been set. Use `SimplyTheTenant.with_tenant` to set a tenant, or `SimplyTheTenant.with_global_access` to bypass tenant scoping.")
+      super("No tenant class has been set. Use `SimplyTheTenant.with_tenant` to set a tenant, " \
+        "or `SimplyTheTenant.with_global_access` to bypass tenant scoping.")
     end
   end
 
@@ -85,7 +90,8 @@ module SimplyTheTenant
 
   class NoSubdomainError < StandardError
     def initialize
-      super("No subdomain found in request. Ensure that the request has a subdomain, or override `tenant_subdomain` to provide a custom subdomain.")
+      super("No subdomain found in request. Ensure that the request has a subdomain, " \
+        "or override `tenant_subdomain` to provide a custom subdomain.")
     end
   end
 end
