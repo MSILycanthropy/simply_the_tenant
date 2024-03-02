@@ -6,7 +6,12 @@ source "https://rubygems.org"
 
 gem "puma"
 gem "sqlite3"
-gem "debug", ">= 1.0.0", group: [ :development, :test ]
+gem "appraisal", git: "https://github.com/thoughtbot/appraisal.git"
+gem "rubocop"
+gem "rubocop-rails-omakase"
+gem "rubocop-shopify"
+gem "rubocop-md"
+gem "debug", group: [ :development, :test ]
 gem "rails", branch: :main, git: "https://github.com/rails/rails.git"
 
 gemspec path: "../"
