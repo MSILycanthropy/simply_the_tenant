@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/simply_the_tenant.svg)](https://badge.fury.io/rb/simply_the_tenant)
+
 # SimplyTheTenant
 Short description and motivation.
 
