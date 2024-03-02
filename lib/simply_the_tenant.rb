@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "simply_the_tenant/version"
 require "simply_the_tenant/engine"
 
@@ -8,6 +10,8 @@ module SimplyTheTenant
   @@tenant_class = nil
   @@global_access = false
 
+  class << self
+  end
   def self.tenant_class
     @@tenant_class
   end
@@ -48,6 +52,7 @@ module SimplyTheTenant
     @@global_access
   end
 
+
   def self.with_tenant(tenant)
     raise NilTenantError if tenant.nil?
 
@@ -73,7 +78,8 @@ module SimplyTheTenant
 
   class NoTenantSetError < StandardError
     def initialize
-      super("No tenant class has been set. Use `SimplyTheTenant.with_tenant` to set a tenant, or `SimplyTheTenant.with_global_access` to bypass tenant scoping.")
+      super("No tenant class has been set. Use `SimplyTheTenant.with_tenant` to set a tenant, " \
+        "or `SimplyTheTenant.with_global_access` to bypass tenant scoping.")
     end
   end
 
@@ -85,7 +91,8 @@ module SimplyTheTenant
 
   class NoSubdomainError < StandardError
     def initialize
-      super("No subdomain found in request. Ensure that the request has a subdomain, or override `tenant_subdomain` to provide a custom subdomain.")
+      super("No subdomain found in request. Ensure that the request has a subdomain, " \
+        "or override `tenant_subdomain` to provide a custom subdomain.")
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SimplyTheTenant
   module ControllerExt
     extend ActiveSupport::Concern
@@ -6,7 +8,7 @@ module SimplyTheTenant
       def sets_current_tenant(name)
         SimplyTheTenant.tenant_class = name.to_s.classify.constantize
 
-        around_action :with_current_tenant
+        around_action(:with_current_tenant)
       end
     end
 
