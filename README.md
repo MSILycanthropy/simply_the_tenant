@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/simply_the_tenant.svg)](https://badge.fury.io/rb/simply_the_tenant)
+[![Gem Version](https://badge.fury.io/rb/simply_the_tenant.svg)](https://badge.fury.io/rb/simply_the_tenant) ![ci](https://github.com/MSILycanthropy/simply_the_tenant/actions/workflows/ci.yml/badge.svg)
 
 # SimplyTheTenant
 Short description and motivation.
