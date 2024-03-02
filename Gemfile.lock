@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    simple_tenant (0.1.0)
+    simply_the_tenant (0.1.0)
       rails (>= 7.1.3.2)
 
 GEM
@@ -206,7 +206,7 @@ PLATFORMS
 
 DEPENDENCIES
   puma
-  simple_tenant!
+  simply_the_tenant!
   sqlite3
 
 BUNDLED WITH

@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# Specify your gem's dependencies in simple_tenant.gemspec.
+# Specify your gem's dependencies in simply_the_tenant.gemspec.
 gemspec
 
 gem "puma"

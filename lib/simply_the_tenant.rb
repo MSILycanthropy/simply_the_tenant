@@ -1,9 +1,9 @@
-require "simple_tenant/version"
-require "simple_tenant/engine"
+require "simply_the_tenant/version"
+require "simply_the_tenant/engine"
 
-module SimpleTenant
-  autoload :ModelExt, "simple_tenant/model_ext"
-  autoload :ControllerExt, "simple_tenant/controller_ext"
+module SimplyTheTenant
+  autoload :ModelExt, "simply_the_tenant/model_ext"
+  autoload :ControllerExt, "simply_the_tenant/controller_ext"
 
   @@tenant_class = nil
   @@global_access = false
@@ -65,7 +65,7 @@ module SimpleTenant
 
   class NoTenantSetError < StandardError
     def initialize
-      super("No tenant class has been set. Use `SimpleTenant.with_tenant` to set a tenant, or `SimpleTenant.with_global_access` to bypass tenant scoping.")
+      super("No tenant class has been set. Use `SimplyTheTenant.with_tenant` to set a tenant, or `SimplyTheTenant.with_global_access` to bypass tenant scoping.")
     end
   end
 
@@ -83,9 +83,9 @@ module SimpleTenant
 end
 
 ActiveSupport.on_load(:active_record) do
-  include SimpleTenant::ModelExt
+  include SimplyTheTenant::ModelExt
 end
 
 ActiveSupport.on_load(:action_controller) do
-  include SimpleTenant::ControllerExt
+  include SimplyTheTenant::ControllerExt
 end

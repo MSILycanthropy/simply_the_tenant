@@ -1,11 +1,11 @@
-require_relative "lib/simple_tenant/version"
+require_relative "lib/simply_the_tenant/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "simple_tenant"
-  spec.version     = SimpleTenant::VERSION
+  spec.name        = "simply_the_tenant"
+  spec.version     = SimplyTheTenant::VERSION
   spec.authors     = ["Ethan Kircher"]
   spec.email       = ["ethanmichaelk@gmail.com"]
-  spec.homepage    = "https://github.com/MSILycanthropy/simple_tenant"
+  spec.homepage    = "https://github.com/MSILycanthropy/simply_the_tenant"
   spec.summary     = "A simple multi-tenant solution for Rails."
   spec.description = "A simple multi-tenant solution for Rails."
   spec.license     = "MIT"
