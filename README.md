@@ -9,7 +9,7 @@ So, that begs the question, what is the point of this gem at all?
 2. `acts_as_tenant` uses `ActiveSupport::CurrentAttributes` under the hood, but that isn't exposed to the user. While that isn't exactly hard to add with `acts_as_tenant`, `simply_the_tenant` does this out of the box.
 3. `simply_the_tenant` adheres to your domain model. `Current.account` vs `current_tenant`, making things marginally easier to reason about.
 4. `simply_the_tenant` uses Rails 7 `query_constraints`, so certain queries will use compound indices, which is nice for anyone who wants to use composite primary keys or sharding.
-5. `simply_the_tenant` requires _explicit_ scoping to access the data of a tenant or global data.
+5. `simply_the_tenant` requires _explicit_ scoping to access the data of a tenant or to access global data.
 
 Overall, `acts_as_tenant` does do all of the things this gem does. `simply_the_tenant` just presents them in a different way and provides less configuration options. If that pleases you, feel free to use `simply_the_tenant` instead!
 
