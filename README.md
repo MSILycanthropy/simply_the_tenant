@@ -1,7 +1,7 @@
 # SimpleTenant
 Simple multitenancy for Rails apps.
 
-A simpler alternative to `acts_as_tenant`. For most applications `acts_as_tenant` is probably what you should reach for
+A simpler alternative to [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant). For most applications [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant) is probably what you should reach for
 
 So, that begs the question, what is the point of this gem at all?
 
