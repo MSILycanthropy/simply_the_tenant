@@ -9,16 +9,31 @@ module SimplyTheTenant
         SimplyTheTenant.tenant_class = self if SimplyTheTenant.tenant_class.blank?
       end
 
-      def belongs_to_tenant(tenant_name)
+      def belongs_to_tenant(tenant_name, query_constraints: [ SimplyTheTenant.tenant_id, :id ], through: nil)
         SimplyTheTenant.tenant_class = tenant_name.to_s.classify.constantize if SimplyTheTenant.tenant_class.blank?
 
+        if through.present?
+          delegate(tenant_name, to: through)
+        else
+          setup_default_methods(tenant_name)
+          set_query_contraints(query_constraints)
+        end
+      end
+
+      private
+
+      def set_query_contraints(constraints)
+        return if constraints.blank?
+
+        query_constraints(*constraints)
+      end
+
+      def setup_default_methods(tenant_name)
         belongs_to(tenant_name)
 
         validates(tenant_name, presence: true)
 
         before_validation(:set_tenant, on: :create)
-
-        query_constraints(SimplyTheTenant.tenant_id, :id)
 
         default_scope do
           if SimplyTheTenant.global_access?
@@ -29,7 +44,7 @@ module SimplyTheTenant
 
             raise SimplyTheTenant::NoTenantSetError if tenant.blank?
 
-            where(tenant_id => tenant.id)
+            where(self.arel_table[tenant_id].eq(tenant.id))
           end
         end
       end
