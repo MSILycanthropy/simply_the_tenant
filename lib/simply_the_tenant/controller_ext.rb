@@ -12,7 +12,7 @@ module SimplyTheTenant
 
     included do
       def with_current_tenant(&)
-        find_tenant_by_subdomain
+        SimplyTheTenant.tenant = find_tenant_by_subdomain
 
         SimplyTheTenant.with_tenant(SimplyTheTenant.tenant, &)
       end
@@ -24,7 +24,7 @@ module SimplyTheTenant
       private
 
       def find_tenant_by_subdomain
-        SimplyTheTenant.tenant_class.find_by(subdomain: tenant_subdomain)
+        SimplyTheTenant.tenant_class.find_by!(subdomain: tenant_subdomain)
       end
 
       def tenant_subdomain

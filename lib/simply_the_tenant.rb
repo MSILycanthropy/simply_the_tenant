@@ -49,12 +49,20 @@ module SimplyTheTenant
   end
 
   def self.with_tenant(tenant)
+    raise NilTenantError if tenant.nil?
+
     previous_tenant = self.tenant
     self.tenant = tenant
 
     yield
   ensure
     self.tenant = previous_tenant
+  end
+
+  class NilTenantError < StandardError
+    def initialize
+      super("Cannot set a nil tenant.")
+    end
   end
 
   class MultipleTenantError < StandardError
