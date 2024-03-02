@@ -1,7 +1,7 @@
 # SimplyTheTenant
 Short description and motivation.
 
-A simpler alternative to [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant). For most applications [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant) is probably what you should reach for
+A simpler alternative to [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant). For most applications [`acts_as_tenant`](https://github.com/ErwinM/acts_as_tenant) is probably what you should reach for, it's battletested, and more feature rich.
 
 So, that begs the question, what is the point of this gem at all?
 
@@ -68,8 +68,8 @@ end
 ## Contributing
 1. Fork the repo
 2. Make changes
-3. Run the nonexistent tests
-4. Run the nonexistent linter
+3. Run the tests `bundle exec appraisals bin/test`
+4. Run the linter `bundle exec rubocop`
 5. Submit a PR
 
 ## License
