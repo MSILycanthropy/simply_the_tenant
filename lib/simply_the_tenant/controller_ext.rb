@@ -13,14 +13,14 @@ module SimplyTheTenant
     end
 
     included do
-      def with_current_tenant(&)
+      def with_current_tenant(&block)
         SimplyTheTenant.tenant = find_tenant_by_subdomain
 
-        SimplyTheTenant.with_tenant(SimplyTheTenant.tenant, &)
+        SimplyTheTenant.with_tenant(SimplyTheTenant.tenant, &block)
       end
 
-      def with_global_access(&)
-        SimplyTheTenant.with_global_access(&)
+      def with_global_access(&block)
+        SimplyTheTenant.with_global_access(&block)
       end
 
       private
