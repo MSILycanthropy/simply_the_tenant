@@ -1,8 +1,17 @@
 # SimpleTenant
-Short description and motivation.
+Simple multitenancy for Rails apps.
 
-## Usage
-How to use my plugin.
+A simpler alternative to `acts_as_tenant`. For most applications `acts_as_tenant` is probably what you should reach for
+
+So, that begs the question, what is the point of this gem at all?
+
+1. I just kinda wanted to write a multitenancy gem. For basically any applications, prefer `acts_as_tenant`, since it's battletested. 
+2. `acts_as_tenant` uses `ActiveSupport::CurrentAttributes` under the hood, but that isn't exposed to the user. While that isn't exactly hard to add with `acts_as_tenant`, `simple_tenant` does this out of the box.
+3. `simple_tenant` adheres to your domain model. `Current.account` vs `current_tenant`, making things marginally easier to reason about.
+4. `simple_tenant` uses Rails 7 `query_constraints`, so certain queries will use compound indices, which is nice for anyone who wants to use composite primary keys or sharding.
+5. `simple_tenant` requires _explicit_ scoping to access the data of a tenant or global data.
+
+Overall, `acts_as_tenant` does do all of the things this gem does. `simple_tenant` just presents them in a different way and provides less configuration options. If that pleases you, feel free to use `simple_tenant` instead!
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -11,18 +20,57 @@ Add this line to your application's Gemfile:
 gem "simple_tenant"
 ```
 
-And then execute:
-```bash
-$ bundle
+# Getting started
+Setting up `simple_tenant` is essentially identical to `acts_as_tenant`. But, a thing to keep in mind is that `simple_tenant` is strict about naming. There is currently no way to tell `simple_tenant` what foreign key to use.
+
+## Model Setup
+```ruby
+class MyTenant < ApplicationRecord
+  simply_the_tenant
+end
 ```
 
-Or install it yourself as:
-```bash
-$ gem install simple_tenant
+Anything that belongs to the `MyTenant` _must_ have a `my_tenant_id` column.  
+```ruby
+class User < ApplicationRecord
+  belongs_to_tenant :my_tenant
+end
 ```
+
+This will set up a default scope, query constraints, automatic setting of `my_tenant_id` and validations for the tenant.
+
+You'll also need to setup a `Current` model if you don't already have one.
+```ruby 
+class Current < ActiveSupport::CurrentAttributes
+  attribute :my_tenant
+end
+```
+
+## Controller Setup
+`simple_tenant` uses the last subdomain from a request to determine the tenant to scope a given request to. There is currently no way to change this in `simple_tenant`
+
+```ruby
+class ApplicationController < ActionController::Base
+  sets_current_tenant :my_tenant
+
+  def some_cool_action
+    # Current.my_tenant is accessible here automatically
+  end
+end
+```
+
+## Background Processing
+`simple_tenant` currently doesn't support automatically setting the tenant for any background processing libraries out of the box. This will change shortly.
+
+## Testing
+`simple_teant` also doesn't support automatically setting the tenant for any testing libraries out of the box. This will change shortly.
 
 ## Contributing
-Contribution directions go here.
+1. Fork the repo
+2. Make changes
+3. Run the nonexistent tests
+4. Run the nonexistent linter
+5. Submit a PR
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
