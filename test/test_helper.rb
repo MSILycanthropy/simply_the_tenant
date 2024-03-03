@@ -4,7 +4,9 @@
 ENV["RAILS_ENV"] = "test"
 
 require_relative "../test/dummy/config/environment"
-ActiveRecord::Migrator.migrations_paths = [ File.expand_path("../test/dummy/db/migrate", __dir__) ]
+Rails.logger.debug("***" * 100)
+load File.expand_path("../test/dummy/db/schema.rb", __dir__)
+Rails.logger.debug("***" * 100)
 require "rails/test_help"
 
 # Load fixtures from the engine
