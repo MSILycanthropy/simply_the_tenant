@@ -13,21 +13,29 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 1) do
-  create_table "my_funny_tenants", force: :cascade do |t|
+  create_table "houses", force: :cascade do |t|
     t.string("name")
-    t.string("subdomain", null: false, index: { unique: true })
+    t.integer("user_id", null: false)
+    t.datetime("created_at", null: false)
+    t.datetime("updated_at", null: false)
+    t.index([ "user_id" ], name: "index_houses_on_user_id")
+  end
+
+  create_table "my_funny_tenants", force: :cascade do |t|
+    t.string("subdomain")
+    t.string("name")
     t.datetime("created_at", null: false)
     t.datetime("updated_at", null: false)
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer("my_funny_tenant_id", null: false)
     t.string("name")
+    t.integer("my_funny_tenant_id", null: false)
     t.datetime("created_at", null: false)
     t.datetime("updated_at", null: false)
-    t.index([ "my_funny_tenant_id", "id" ], name: "index_users_on_my_funny_tenant_id_and_id")
     t.index([ "my_funny_tenant_id" ], name: "index_users_on_my_funny_tenant_id")
   end
 
+  add_foreign_key "houses", "users"
   add_foreign_key "users", "my_funny_tenants"
 end
