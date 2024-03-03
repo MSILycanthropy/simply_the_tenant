@@ -13,6 +13,7 @@ class AssociationWithoutTenantIdTest < ActiveSupport::TestCase
 
   def teardown
     SimplyTheTenant.with_tenant(@my_funny_tenant) do
+      House.delete_all
       User.delete_all
     end
 
