@@ -9,10 +9,47 @@ module SimplyTheTenant
         SimplyTheTenant.tenant_class = self if SimplyTheTenant.tenant_class.blank?
       end
 
+      def has_many(name, *args, **kwargs)
+        name_class = name.to_s.classify.constantize
+
+        if name_class.column_names.exclude?(SimplyTheTenant.tenant_id.to_s)
+          super(name, *args, query_constraints: [ "#{self.name.downcase}_id" ], **kwargs)
+
+          return
+        end
+
+        super(name, *args, **kwargs)
+      end
+
+      def has_one(name, *args, **kwargs)
+        name_class = name.to_s.classify.constantize
+
+        if name_class.column_names.exclude?(SimplyTheTenant.tenant_id.to_s)
+          super(name, *args, query_constraints: [ "#{self.name.downcase}_id" ], **kwargs)
+
+          return
+        end
+
+        super(name, *args, **kwargs)
+      end
+
+      def belongs_to(name, *args, **kwargs)
+        belongs_to_tenant(name) if name == SimplyTheTenant.tenant_name
+
+        if column_names.exclude?(SimplyTheTenant.tenant_id.to_s)
+          # TODO: support key specification here
+          super(name, *args, query_constraints: [ "#{name}_id" ], **kwargs)
+
+          return
+        end
+
+        super(name, *args, **kwargs)
+      end
+
+      private
+
       def belongs_to_tenant(tenant_name)
         SimplyTheTenant.tenant_class = tenant_name.to_s.classify.constantize if SimplyTheTenant.tenant_class.blank?
-
-        belongs_to(tenant_name)
 
         validates(tenant_name, presence: true)
 
