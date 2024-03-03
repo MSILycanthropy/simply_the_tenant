@@ -96,11 +96,3 @@ module SimplyTheTenant
     end
   end
 end
-
-ActiveSupport.on_load(:active_record) do
-  include SimplyTheTenant::ModelExt
-end
-
-ActiveSupport.on_load(:action_controller) do
-  include SimplyTheTenant::ControllerExt
-end
