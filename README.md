@@ -35,7 +35,7 @@ end
 Anything that belongs to the `MyTenant` _must_ have a `my_tenant_id` column.
 ```ruby
 class User < ApplicationRecord
-  belongs_to :my_tenant
+  belongs_to_tenant :my_tenant
 end
 ```
 
